@@ -155,15 +155,6 @@ export interface Holiday {
   description?: string;
 }
 
-export interface Announcement {
-  id: string;
-  title: string;
-  message: string;
-  createdBy?: string;
-  createdAt: string;
-  creator?: UserBasic;
-}
-
 export interface ApiResponse<T = any> {
   success: boolean;
   message?: string;

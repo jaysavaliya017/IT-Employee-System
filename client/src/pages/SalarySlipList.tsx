@@ -1,25 +1,20 @@
 import { useState, useEffect } from 'react';
-import { salaryApi, employeeApi } from '../api/services';
-import { SalaryRecord, User, ApiResponse } from '../types';
-import { format } from 'date-fns';
+import {  salaryApi } from '../api/services';
+import { SalaryRecord } from '../types';
 import {
   Download,
   Search,
-  Filter,
   ChevronLeft,
   ChevronRight,
-  Eye,
   CheckCircle,
   Clock,
   AlertCircle,
   DollarSign,
 } from 'lucide-react';
 import {Loader} from '../components/Loader';
-import Modal from '../components/Modal';
 
 const SalarySlipList = () => {
   const [records, setRecords] = useState<SalaryRecord[]>([]);
-  const [employees, setEmployees] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, totalPages: 0 });
   const [filters, setFilters] = useState({
@@ -30,15 +25,10 @@ const SalarySlipList = () => {
     status: '',
     search: '',
   });
-  const [selectedRecord, setSelectedRecord] = useState<SalaryRecord | null>(null);
 
   useEffect(() => {
     fetchRecords();
   }, [pagination.page, filters]);
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
 
   const fetchRecords = async () => {
     try {
@@ -64,16 +54,6 @@ const SalarySlipList = () => {
     }
   };
 
-  const fetchEmployees = async () => {
-    try {
-      const response = await employeeApi.getAll({ limit: 100 });
-      if (response.data.success) {
-        setEmployees(response.data.data.employees);
-      }
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
 
   const downloadSlip = async (recordId: string) => {
     try {

@@ -4,13 +4,9 @@ import { SalaryRecord, User, SalaryStructure } from '../types';
 import {
   Play,
   CheckCircle,
-  DollarSign,
-  Users,
-  Calendar,
   Loader,
   AlertCircle,
   Eye,
-  X,
 } from 'lucide-react';
 import Modal from '../components/Modal';
 

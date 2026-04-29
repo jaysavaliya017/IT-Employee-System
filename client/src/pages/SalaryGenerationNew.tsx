@@ -5,15 +5,10 @@ import {
   Play,
   Download,
   Search,
-  Filter,
-  ChevronLeft,
-  ChevronRight,
   CheckCircle,
   Clock,
-  DollarSign,
   Loader,
   AlertCircle,
-  Eye,
   FileText,
   Users,
 } from 'lucide-react';
@@ -28,7 +23,6 @@ const SalaryGeneration = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
   const [showResultModal, setShowResultModal] = useState(false);
   const [bulkResult, setBulkResult] = useState<BulkSalaryResult | null>(null);
   const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
