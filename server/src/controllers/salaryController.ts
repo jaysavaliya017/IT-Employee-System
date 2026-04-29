@@ -646,9 +646,9 @@ export const addSalaryComponent = async (req: AuthRequest, res: Response) => {
     await prisma.salaryRecord.update({
       where: { id: salaryRecordId },
       data: {
-        totalEarnings: salaryRecord.totalEarnings + bonusTotal,
-        totalDeductions: salaryRecord.totalDeductions + deductionTotal,
-        netSalary: salaryRecord.grossSalary - salaryRecord.totalDeductions + deductionTotal - bonusTotal,
+        totalEarnings: Number(salaryRecord.totalEarnings) + bonusTotal,
+        totalDeductions: Number(salaryRecord.totalDeductions) + deductionTotal,
+        netSalary: Number(salaryRecord.grossSalary) - Number(salaryRecord.totalDeductions) + deductionTotal - bonusTotal,
       },
     });
 
