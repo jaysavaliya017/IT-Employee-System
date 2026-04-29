@@ -15,6 +15,8 @@ import {
   Loader,
 } from 'lucide-react';
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 const GalleryPage = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -36,7 +38,8 @@ const GalleryPage = () => {
   const resolveImageUrl = (url?: string) => {
     if (!url) return '';
     if (/^https?:\/\//i.test(url)) return url;
-    return url;
+    const normalizedPath = url.startsWith('/') ? url : `/${url}`;
+    return `${API_BASE_URL}${normalizedPath}`;
   };
 
   const getDownloadFileName = (image: GalleryImage) => {
