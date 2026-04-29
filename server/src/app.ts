@@ -30,8 +30,13 @@ import holidayEnhancedRoutes from './routes/holidayEnhanced';
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  config.frontendUrl,
+].filter(Boolean);
+
 app.use(cors({
-  origin: config.frontendUrl,
+  origin: allowedOrigins,
   credentials: true,
 }));
 
@@ -39,8 +44,21 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
 
-app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'Server is running', timestamp: new Date().toISOString() });
+app.get('/', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'ProAttend API is running',
+    health: '/api/health',
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get('/api/health', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'Server is running',
+    timestamp: new Date().toISOString(),
+  });
 });
 
 app.use('/api/auth', authRoutes);
