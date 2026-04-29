@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Bell,
   Pin,
+  Search,
 } from 'lucide-react';
 import {Loader} from '../components/Loader';
 import Modal from '../components/Modal';

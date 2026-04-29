@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { salaryApi, employeeApi } from '../api/services';
-import { SalaryRecord, User, SalaryStructure } from '../types';
+import { SalaryRecord, User } from '../types';
 import {
   Play,
   CheckCircle,

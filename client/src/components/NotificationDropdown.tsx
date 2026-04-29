@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { notificationApi } from '../api/services';
 import { Notification } from '../types';
 import { Bell, Check, CheckCheck, Loader } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const NotificationDropdown = () => {

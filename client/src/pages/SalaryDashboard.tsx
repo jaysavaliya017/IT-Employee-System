@@ -20,9 +20,6 @@ const SalaryDashboard = () => {
   const [salaryStructure, setSalaryStructure] = useState<SalaryStructure | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const isAdmin = ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'].includes(user?.role || '');
-  const isManager = ['MANAGER', 'TEAM_LEADER'].includes(user?.role || '');
-
   useEffect(() => {
     fetchSalaryData();
   }, []);
