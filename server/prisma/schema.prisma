@@ -120,7 +120,7 @@ model User {
   approvedResourceRequests    ResourceRequest[]                @relation("ResourceRequestApprover")
   rejectedResourceRequests    ResourceRequest[]                @relation("ResourceRequestRejecter")
   teamMemberships             TeamMember[]
-  announcements               Announcement[]
+  announcements               Announcement[]               @relation("AnnouncementCreator")
   messageConversations        MessageConversationParticipant[]
   sentMessages                Message[]                        @relation("MessageSender")
   messageReadReceipts         MessageReadReceipt[]
@@ -159,6 +159,7 @@ model Company {
   documents            Document[]
   policies             Policy[]
   auditLogs            AuditLog[]
+  announcements        Announcement[]
 
   @@map("companies")
 }
@@ -175,6 +176,7 @@ model Department {
   shifts Shift[]
   galleryImages GalleryImage[]
   documents     Document[]
+  announcements Announcement[]
 
   @@map("departments")
 }
@@ -199,6 +201,7 @@ model Team {
   members TeamMember[]
   galleryImages GalleryImage[]
   documents     Document[]
+  announcements Announcement[]
 
   @@unique([name, departmentId])
   @@map("teams")
@@ -355,6 +358,8 @@ model Holiday {
   title       String
   date        DateTime
   description String?
+  holidayType String   @default("GENERAL")
+  isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -362,14 +367,27 @@ model Holiday {
 }
 
 model Announcement {
-  id        String   @id @default(uuid())
-  title     String
-  message   String
-  createdBy String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String    @id @default(uuid())
+  title            String
+  message          String
+  priority         String    @default("MEDIUM")
+  visibilityType   String    @default("ALL")
+  expiryDate       DateTime?
+  attachmentUrl    String?
+  attachmentName   String?
+  companyId        String?
+  departmentId     String?
+  teamId           String?
+  targetEmployeeId String?
+  isActive         Boolean   @default(true)
+  createdBy        String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
-  creator User? @relation(fields: [createdBy], references: [id])
+  company    Company?    @relation(fields: [companyId], references: [id])
+  department Department? @relation(fields: [departmentId], references: [id])
+  team       Team?       @relation(fields: [teamId], references: [id])
+  creator    User?       @relation("AnnouncementCreator", fields: [createdBy], references: [id])
 
   @@map("announcements")
 }
@@ -490,16 +508,17 @@ model MessageAttachment {
 }
 
 model Notification {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   userId       String
-  title         String
-  message       String
-  type          String   @default("GENERAL")
-  isRead        Boolean  @default(false)
-  referenceId   String?
+  title        String
+  message      String
+  type         String    @default("GENERAL")
+  isRead       Boolean   @default(false)
+  readAt       DateTime?
+  referenceId  String?
   referenceType String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -610,28 +629,25 @@ model SalaryComponent {
 }
 
 model SalarySlip {
-  id            String          @id @default(uuid())
-  employeeId    String
-  month         Int
-  year          Int
-  salaryAmount  Decimal         @db.Decimal(12, 2)
-  bonus         Decimal         @default(0) @db.Decimal(12, 2)
-  deduction     Decimal         @default(0) @db.Decimal(12, 2)
-  netSalary     Decimal         @db.Decimal(12, 2)
-  status        SalarySlipStatus @default(NOT_GENERATED)
-  pdfUrl        String?
-  generatedBy   String?
-  generatedAt   DateTime?
-  paidAt        DateTime?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id              String   @id @default(uuid())
+  employeeId      String
+  month           Int
+  year            Int
+  basicSalary     Float   @default(0)
+  allowances      Float   @default(0)
+  deductions      Float   @default(0)
+  netSalary       Float   @default(0)
+  status          String  @default("GENERATED")
+  slipUrl         String?
+  generatedById   String?
+  generatedAt     DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  employee     User      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  generatedByUser User?  @relation("SalarySlipGenerator", fields: [generatedBy], references: [id])
+  employee User @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  generatedBy User? @relation("SalarySlipGenerator", fields: [generatedById], references: [id])
 
   @@unique([employeeId, month, year])
-  @@index([employeeId, year, month])
-  @@index([year, month, status])
   @@map("salary_slips")
 }
 
@@ -705,8 +721,8 @@ model Policy {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  company       Company @relation(fields: [companyId], references: [id])
-  createdByUser User    @relation("PolicyCreator", fields: [createdBy], references: [id])
+  company Company @relation(fields: [companyId], references: [id])
+  creator User    @relation("PolicyCreator", fields: [createdBy], references: [id])
 
   @@map("policies")
 }
