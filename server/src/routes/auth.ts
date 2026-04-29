@@ -11,6 +11,7 @@ import {
 
 const router = Router();
 
+router.get('/validate-company', validateCompany);
 router.post('/validate-company', validateCompany);
 router.post('/login', login);
 router.post('/register', register);

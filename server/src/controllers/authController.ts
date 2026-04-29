@@ -44,7 +44,9 @@ const resolveCompany = async (companyName: string) => {
 
 export const validateCompany = async (req: AuthRequest, res: Response<ApiResponse>) => {
   try {
-    const { companyName } = companyValidationSchema.parse(req.body);
+    const { companyName } = companyValidationSchema.parse({
+      companyName: req.body?.companyName ?? req.query?.companyName,
+    });
     const company = await resolveCompany(companyName);
 
     if (!company || !company.isActive) {
