@@ -23,10 +23,10 @@ if (!fs.existsSync(uploadDir)) {
 
 // Configure multer for policy document uploads
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req: Express.Request, _file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
     cb(null, uploadDir);
   },
-  filename: (req, file, cb) => {
+  filename: (_req: Express.Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + '-' + file.originalname);
   },

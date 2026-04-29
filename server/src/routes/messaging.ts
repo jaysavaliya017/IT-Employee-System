@@ -20,8 +20,8 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
+  destination: (_req: Express.Request, _file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => cb(null, uploadsDir),
+  filename: (_req: Express.Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
     const timestamp = Date.now();
     const safeName = file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, '_');
     cb(null, `${timestamp}_${safeName}`);
@@ -45,7 +45,7 @@ router.post('/conversations/:conversationId/messages', authMiddleware, sendMessa
 router.post('/conversations/:conversationId/read', authMiddleware, markReadHandler);
 router.get('/unread-count', authMiddleware, getUnreadCountHandler);
 router.post('/bulk', authMiddleware, sendBulkAnnouncement);
-router.post('/upload', authMiddleware, upload.array('files', 5), (req, res) => {
+router.post('/upload', authMiddleware, upload.array('files', 5), (req: import('express').Request, res: import('express').Response) => {
   const files = (req.files as Express.Multer.File[]) || [];
   const mapped = files.map((file) => ({
     fileName: file.originalname,
