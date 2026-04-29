@@ -160,6 +160,7 @@ model Company {
   policies             Policy[]
   auditLogs            AuditLog[]
   announcements        Announcement[]
+  holidays             Holiday[]
 
   @@map("companies")
 }
@@ -360,8 +361,11 @@ model Holiday {
   description String?
   holidayType String   @default("GENERAL")
   isActive    Boolean  @default(true)
+  companyId   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  company Company? @relation(fields: [companyId], references: [id])
 
   @@map("holidays")
 }
@@ -629,23 +633,28 @@ model SalaryComponent {
 }
 
 model SalarySlip {
-  id              String   @id @default(uuid())
+  id              String    @id @default(uuid())
   employeeId      String
   month           Int
   year            Int
-  basicSalary     Float   @default(0)
-  allowances      Float   @default(0)
-  deductions      Float   @default(0)
-  netSalary       Float   @default(0)
-  status          String  @default("GENERATED")
+  basicSalary     Float     @default(0)
+  salaryAmount    Float     @default(0)
+  bonus           Float     @default(0)
+  allowances      Float     @default(0)
+  deduction       Float     @default(0)
+  deductions      Float     @default(0)
+  netSalary       Float     @default(0)
+  status          String    @default("GENERATED")
   slipUrl         String?
+  pdfUrl          String?
+  paidAt          DateTime?
   generatedById   String?
-  generatedAt     DateTime @default(now())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  generatedAt     DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
-  employee User @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  generatedBy User? @relation("SalarySlipGenerator", fields: [generatedById], references: [id])
+  employee      User  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  generatedByUser User? @relation("SalarySlipGenerator", fields: [generatedById], references: [id])
 
   @@unique([employeeId, month, year])
   @@map("salary_slips")
