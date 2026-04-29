@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173/api/notifications/unread-count -H \"Authorization: Bearer test\")",
+      "Bash(npx prisma *)",
+      "Bash(node -e \"const { PrismaClient } = require\\('@prisma/client'\\); const prisma = new PrismaClient\\(\\); prisma.notification.count\\(\\).then\\(r => console.log\\('OK:', r\\)\\).catch\\(e => console.log\\('Error:', e.message\\)\\);\")",
+      "Bash(npx tsx *)",
+      "Bash(netstat -ano)",
+      "Bash(curl -s http://localhost:5000/api/notifications/unread-count -H \"Authorization: Bearer test\")",
+      "Bash(curl *)"
+    ]
+  }
+}
