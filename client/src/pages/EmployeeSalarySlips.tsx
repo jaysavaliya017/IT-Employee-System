@@ -3,14 +3,12 @@ import { salarySlipApi } from '../api/services';
 import { SalarySlip } from '../types';
 import {
   Download,
-  Search,
   ChevronLeft,
   ChevronRight,
   CheckCircle,
   Clock,
   AlertCircle,
   FileText,
-  DollarSign,
 } from 'lucide-react';
 import { Loader } from '../components/Loader';
 
@@ -226,7 +224,9 @@ const EmployeeSalarySlips = () => {
                   >
                     {downloadLoading === slip.id ? (
                       <>
-                        <Loader className="w-4 h-4 animate-spin" />
+                        <span className="w-4 h-4 animate-spin inline-block">
+                          <Loader size="sm" />
+                        </span>
                         Downloading...
                       </>
                     ) : (

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { salaryApi, employeeApi } from '../api/services';
-import { SalaryRecord, SalaryStructure, User, ApiResponse } from '../types';
-import { format } from 'date-fns';
+import { salaryApi } from '../api/services';
+import { SalaryRecord, SalaryStructure } from '../types';
 import {
   DollarSign,
   Download,
@@ -20,7 +19,6 @@ const SalaryDashboard = () => {
   const [salaryRecords, setSalaryRecords] = useState<SalaryRecord[]>([]);
   const [salaryStructure, setSalaryStructure] = useState<SalaryStructure | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedRecord, setSelectedRecord] = useState<SalaryRecord | null>(null);
 
   const isAdmin = ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'].includes(user?.role || '');
   const isManager = ['MANAGER', 'TEAM_LEADER'].includes(user?.role || '');

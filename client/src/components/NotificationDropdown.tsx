@@ -11,7 +11,6 @@ const NotificationDropdown = () => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

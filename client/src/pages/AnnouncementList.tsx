@@ -3,11 +3,8 @@ import { announcementApi } from '../api/services';
 import { Announcement } from '../types';
 import {
   Plus,
-  Search,
-  Filter,
   Edit,
   Trash2,
-  Eye,
   Clock,
   AlertCircle,
   ChevronLeft,
