@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: staffsync-api
+    runtime: node
+    plan: starter          # free tier sleeps after 15 min idle, which breaks the
+                           # biometric cron and delays ADMS pushes. See DEPLOY.md.
+    region: singapore
+    rootDir: server
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false
+      - key: VERCEL_PROJECT
+        sync: false
+      - key: BIOMETRIC_SYNC_ENABLED
+        value: "true"
+      - key: BIOMETRIC_TIMEZONE
+        value: Asia/Kolkata
